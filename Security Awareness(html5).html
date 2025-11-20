@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🚨 Security Awareness TEST 🚨 - By DaUfooo</title>
+
+<style>
+    body {
+        background: #0a0f14;
+        color: #e8eef5;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        height: 100vh;
+        user-select: none;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        cursor: default;
+    }
+
+    /* Popup fix im oberen Bereich */
+    #awarenessPopup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55%;
+        background: rgba(0,0,0,0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        z-index: 1000;
+    }
+
+    #popupBox {
+        max-width: 650px;
+        width: 90%;
+        background: #111a22;
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid #333;
+        box-shadow: 0 0 25px rgba(255,0,0,0.3);
+        font-family: monospace;
+    }
+
+    h1 { color: #ff4b4b; margin-top: 0; }
+    h2 { color: #ffd1d1; }
+    h3 { color: #ff8080; }
+    p  { color: #9afc6a; }
+
+    /* Terminal in der unteren Hälfte */
+    #terminal {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 45%;
+        background: #010409;
+        border-top: 1px solid #222;
+        padding: 12px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 14px;
+        display: none;
+        color: #c7e1ff;
+        z-index: 500;
+    }
+
+    .prompt { color: #82aaff; }
+    .danger { color: #ff4b4b; font-weight: bold; }
+
+    /* Interaktiver Link */
+    .clickable {
+        color: #ffd700;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: underline;
+        margin: 10px 0;
+        display: inline-block;
+    }
+
+    /* Weihnachtsbaum */
+    .tree {
+        display: inline-block;
+        margin-left: 10px;
+        vertical-align: middle;
+        font-size: 1.5em;
+        color: #32cd32;
+    }
+
+    .content {
+        max-width: 600px;
+        line-height: 1.6;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="content">
+    <h1>Firmen Weihnachtsfeier <span class="tree">🎄</span></h1>
+    <p>
+        Liebe Kolleginnen und Kollegen,<br>
+        da wir heuer nur eine <strong>BEGRENZTE</strong> Anzahl an der Teilnahme gestatten können zu unserer Weihnachtsfeier zu kommen, 
+        lasst euch nicht allzu lange Zeit und
+    </p>
+    <div class="clickable" id="triggerClick">!!! Klickt HIER SoFoRt !!!</div>
+    <p>
+        PS: Alle Teilnehmer bekommen dieses Jahr ein Geschenk :)<br>
+        (So wie auch wir - gleich -> Böses Lach Smiley)
+    </p>
+</div>
+
+<!-- Popup bleibt sichtbar -->
+<div id="awarenessPopup">
+    <div id="popupBox">
+        <h1>🚨 PHISHING ANGRIFF 🚨</h1>
+        <h2>Sie haben auf ein potenziell gefährliches Element geklickt.</h2>
+        <h3>Ein echter Exploit hätte jetzt Malware gestartet.</h3>
+        <p>Lektion: Niemals unbekannte Dateien oder Links leichtfertig öffnen.</p>
+    </div>
+</div>
+
+<!-- Terminal unten -->
+<div id="terminal"></div>
+
+<script>
+let triggered = false;
+
+document.getElementById("triggerClick").addEventListener("click", () => {
+    if (triggered) return;
+    triggered = true;
+
+    // Popup oben einblenden
+    const popup = document.getElementById("awarenessPopup");
+    popup.style.display = "flex";
+
+    // Terminal unten starten
+    startTerminalSimulation();
+});
+
+function appendLine(text, cls = "") {
+    const terminal = document.getElementById("terminal");
+    const div = document.createElement("div");
+    div.innerHTML = `<span class="prompt">user@client:~$</span> <span class="${cls}">${text}</span>`;
+    terminal.appendChild(div);
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+function appendRaw(text) {
+    const terminal = document.getElementById("terminal");
+    const div = document.createElement("div");
+    div.textContent = text;
+    terminal.appendChild(div);
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function startTerminalSimulation() {
+    const terminal = document.getElementById("terminal");
+    terminal.style.display = "block";
+
+    await sleep(300);
+    appendRaw("=== PHISHING ANGRIFF LÄUFT ===");
+    await sleep(600);
+
+    appendLine("Datei wurde geladen: WeinachtsGeschenk.docm");
+    await sleep(600);
+
+    appendLine("Makro startet Payload…", "danger");
+    await sleep(900);
+
+    appendLine("Verbinde zu Command-&-Control-Server…", "danger");
+    await sleep(900);
+
+    appendLine("C2-Antwort erhalten: Lade weitere Module nach…", "danger");
+    await sleep(800);
+
+    appendLine("Empfange Datenpaket: Virus_SystemLocker.dll (14.2 MB)…", "danger");
+    await sleep(700);
+
+    appendLine("Modul wird entschlüsselt…", "danger");
+    await sleep(900);
+
+    appendLine("Starte Reconnaissance-Scan…", "danger");
+    await sleep(700);
+
+    appendLine("Suche nach Passwörtern, Cookies, Tokens…", "danger");
+    await sleep(700);
+
+    appendLine("Finde KeePass-Datenbank: C:\\Users\\%USER%\\Documents\\vault.kdbx", "danger");
+    appendLine("Finde KeePass-Datenbank: N:\\Users\\%USER%\\Documents\\keepass.kdbx", "danger");
+    await sleep(850);
+
+    appendLine("Extrahiere Daten aus vaultwarden.kdbx…", "danger");
+    appendLine("Extrahiere Daten aus keepass.kdbx…", "danger");
+    await sleep(900);
+
+    appendLine("Versuche Masterkey mittels Memory Scraping auszulesen…", "danger");
+    await sleep(900);
+
+    appendLine("Credentials gefunden: (verschlüsselt → an C2 übertragen)", "danger");
+    await sleep(1100);
+
+    appendLine("Durchsuche Browser-Profile…", "danger");
+    await sleep(800);
+
+    appendLine("Chrome: Login-Daten extrahiert", "danger");
+    await sleep(700);
+
+    appendLine("Edge: AutoFill-Daten erfasst", "danger");
+    await sleep(700);
+
+    appendLine("Sammle Dateien: Desktop, Dokumente, Downloads…", "danger");
+    await sleep(1000);
+
+    appendLine("Sende komprimierte Nutzerdaten (42.7 MB) an C2-Server…", "danger");
+    await sleep(1100);
+
+    appendLine("Initialisiere Ransomware-Modul…", "danger");
+    await sleep(1200);
+
+    appendLine("Verschlüsselung gestartet — System kompromittiert.", "danger");
+    await sleep(1000);
+
+    appendRaw("--- WARNUNG: Bitte bezahle Sie 25000€ (Gerne auch in BitCoin) ---");
+    await sleep(1000);
+
+    appendLine("Vielen Dank für DEINE Daten - Frohe Weihnachten.", "danger");
+    appendLine("Ohne Weihnachtsgeld :) - Wieder Böses Lach Smiley", "danger");
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+</script>
+
+</body>
+</html>
+
+<!-- By DaUfooo 2025 -->
