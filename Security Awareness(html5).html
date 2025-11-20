@@ -2,246 +2,342 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🚨 Security Awareness TEST 🚨 - By DaUfooo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Microsoft Azure Datei Freigabe | 🚨 Security Awareness TEST 🚨 - By DaUfooo</title>
 
 <style>
-    body {
-        background: #0a0f14;
-        color: #e8eef5;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        height: 100vh;
-        user-select: none;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        cursor: default;
-    }
+:root {
+  --bg:#0b0f14; --panel:#0f1720; --accent:#ff4d4f; --lime:#a6ff4d; --muted:#8b99a6;
+  --mono:"SFMono-Regular",Consolas,"Roboto Mono",Menlo,monospace;
+}
+html,body {
+  height:100%; margin:0;
+  background:linear-gradient(180deg,#06080a 0%, #0c1116 100%);
+  color:#e6eef6; font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  overflow-x:hidden;
+}
 
-    /* Popup fix im oberen Bereich */
-    #awarenessPopup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 55%;
-        background: rgba(0,0,0,0.85);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 20px;
-        box-sizing: border-box;
-        z-index: 1000;
-    }
+/* === rotes Warn-Popup (aus deinem Code) === */
+#awarenessPopup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 55%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 20px; box-sizing: border-box;
+  z-index: 1000;
+}
+#popupBox {
+  max-width: 650px; width: 90%;
+  background: #111a22;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  box-shadow: 0 0 25px rgba(255,0,0,0.3);
+  font-family: monospace;
+}
+#popupBox h1 { color: #ff4b4b; margin-top: 0; }
+#popupBox h2 { color: #ffd1d1; }
+#popupBox h3 { color: #ff8080; }
+#popupBox p  { color: #9afc6a; }
 
-    #popupBox {
-        max-width: 650px;
-        width: 90%;
-        background: #111a22;
-        padding: 30px;
-        border-radius: 12px;
-        border: 1px solid #333;
-        box-shadow: 0 0 25px rgba(255,0,0,0.3);
-        font-family: monospace;
-    }
+/* === Restliche Styles deiner Awareness-Seite === */
+.container {
+  min-height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; padding:28px;
+  box-sizing:border-box;
+}
+header{text-align:center;margin-bottom:18px;}
+header h1{font-family:var(--mono);font-size:1.8rem;margin:.2rem;color:#a6ff4d;}
+.card {
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.03);
+  width:min(900px,95%);border-radius:12px;padding:18px;
+  box-shadow:0 6px 30px rgba(2,6,12,0.6);
+  text-align:center;
+}
+.btn {
+  background:var(--lime);color:#000;font-weight:700;
+  border:none;padding:14px 24px;border-radius:8px;
+  font-size:1rem;cursor:pointer;transition:all .25s;
+}
+.btn:hover { background:#d6ff7f; transform:scale(1.03); }
 
-    h1 { color: #ff4b4b; margin-top: 0; }
-    h2 { color: #ffd1d1; }
-    h3 { color: #ff8080; }
-    p  { color: #9afc6a; }
+.small-btn {
+  position:absolute; bottom:10px; right:10px;
+  background:#2a3440; color:#ccc; font-size:.8rem;
+  padding:6px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer; transition:all .2s;
+}
+.small-btn:hover { background:#3a4454; color:#fff; }
 
-    /* Terminal in der unteren Hälfte */
-    #terminal {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 45%;
-        background: #010409;
-        border-top: 1px solid #222;
-        padding: 12px;
-        box-sizing: border-box;
-        overflow-y: auto;
-        font-family: monospace;
-        font-size: 14px;
-        display: none;
-        color: #c7e1ff;
-        z-index: 500;
-    }
+.hidden {display:none;}
 
-    .prompt { color: #82aaff; }
-    .danger { color: #ff4b4b; font-weight: bold; }
+.pdf-view {
+  height:360px; border:1px solid rgba(255,255,255,0.1);
+  background:linear-gradient(180deg,#f6f7f8 0%, #e9edf2 100%);
+  color:#111; border-radius:8px; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  font-family: "Segoe UI",sans-serif;
+  position:relative;
+}
+.pdf-view::before {
+  content:"📄"; font-size:4rem; opacity:0.2; position:absolute; top:20px; left:20px;
+}
 
-    /* Interaktiver Link */
-    .clickable {
-        color: #ffd700;
-        font-weight: bold;
-        cursor: pointer;
-        text-decoration: underline;
-        margin: 10px 0;
-        display: inline-block;
-    }
+.terminal {
+  background:#010409;border-radius:8px;padding:14px;height:360px;
+  overflow:auto;border:1px solid rgba(255,255,255,0.04);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.6);
+  text-align:left;
+}
 
-    /* Weihnachtsbaum */
-    .tree {
-        display: inline-block;
-        margin-left: 10px;
-        vertical-align: middle;
-        font-size: 1.5em;
-        color: #32cd32;
-    }
+.term-line {
+  font-family:var(--mono);font-size:13px;line-height:1.45;
+  color:#cfe8ff;white-space:pre-wrap;
+}
+.term-line .prompt {color:#8ab4ff}
+.term-line .danger {color:var(--accent);font-weight:700}
 
-    .content {
-        max-width: 600px;
-        line-height: 1.6;
-    }
+.log {font-family:system-ui;font-size:13px;color:var(--muted);margin-top:8px;text-align:left;}
+
+@keyframes blinkRed {
+  0%,100% {opacity:1; color:#ff4d4f;}
+  50% {opacity:0;}
+}
+@keyframes blinkGreen {
+  0%,100% {opacity:1; color:#a6ff4d;}
+  50% {opacity:0;}
+}
+.blinkRed { animation: blinkRed 1s linear infinite; }
+.blinkGreen { animation: blinkGreen 1s linear infinite; }
+
+.fade {animation:fadeOut 1s forwards;}
+@keyframes fadeOut {
+  to {opacity:0;filter:blur(8px);}
+}
+
+/* === Clippy Erfolgsszene === */
+.success-scene {
+  height:360px; border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; position:relative;
+  background:radial-gradient(circle at center, #14222f 0%, #0b121a 80%);
+  overflow:hidden;
+  display:none;
+}
+.clippy {
+  font-size:4rem;
+  animation: hop 1.2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.flag {
+  font-size:2rem;
+  position:absolute;
+  top:-10px; right:-15px;
+  transform:rotate(15deg);
+}
+.success-msg {
+  margin-top:20px;
+  font-size:1.3rem;
+  color:var(--lime);
+  font-weight:700;
+  animation: fadeIn 1s ease-in forwards;
+}
+@keyframes hop {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
 </style>
 </head>
 
 <body>
 
-<div class="content">
-    <h1>Firmen Weihnachtsfeier <span class="tree">🎄</span></h1>
-    <p>
-        Liebe Kolleginnen und Kollegen,<br>
-        da wir heuer nur eine <strong>BEGRENZTE</strong> Anzahl an der Teilnahme gestatten können zu unserer Weihnachtsfeier zu kommen, 
-        lasst euch nicht allzu lange Zeit und
-    </p>
-    <div class="clickable" id="triggerClick">!!! Klickt HIER SoFoRt !!!</div>
-    <p>
-        PS: Alle Teilnehmer bekommen dieses Jahr ein Geschenk :)<br>
-        (So wie auch wir - gleich -> Böses Lach Smiley)
-    </p>
-</div>
-
-<!-- Popup bleibt sichtbar -->
 <div id="awarenessPopup">
-    <div id="popupBox">
-        <h1>🚨 PHISHING ANGRIFF 🚨</h1>
-        <h2>Sie haben auf ein potenziell gefährliches Element geklickt.</h2>
-        <h3>Ein echter Exploit hätte jetzt Malware gestartet.</h3>
-        <p>Lektion: Niemals unbekannte Dateien oder Links leichtfertig öffnen.</p>
-    </div>
+  <div id="popupBox">
+    <h1>🚨 PHISHING ANGRIFF 🚨</h1>
+    <h2>Sie haben auf ein potenziell gefährliches Element geklickt.</h2>
+    <h3>Ein echter Exploit hätte jetzt Malware gestartet.</h3>
+    <p>Lektion: Niemals unbekannte Dateien oder Links leichtfertig öffnen.</p>
+  </div>
 </div>
 
-<!-- Terminal unten -->
-<div id="terminal"></div>
+<div class="container">
+  <header><h1>Microsoft</h1></header>
+  <header><h1>Datei Freigabe - Rechnung 2025</h1></header>
+  
+  <section class="card" aria-label="Awareness Test">
+    <div id="warningText" class="hidden">
+      <h2 id="warningTitle" class="blinkRed">Sie haben auf ein potenziell gefährliches Element geklickt. 😡</h2>
+      <div id="warningDetails" class="blinkGreen">Jetzt ist es passiert und nun kann man HIER nur noch zusehen 😢  </div>
+    </div>
+
+    <div id="pdfArea" class="pdf-view">
+      <h2 style="font-size:1.1rem;color:#333;">Monatsbeleg.pdf</h2>
+    </div>
+
+    <div id="terminalArea" class="terminal hidden" aria-live="polite"></div>
+
+    <div id="successScene" class="success-scene hidden">
+      <div class="clippy">📎<span class="flag">🏁</span></div>
+	  
+      <div class="success-msg">
+    <div>🎉 --- Awareness-Test: Bestanden! ✅ --- 🎉</div>
+	<span>😀 Gratulation! Super gemacht 😎</span>
+	<br>
+  <div>
+    <span></span><br>
+    <span>🍕🐝</span><br>
+	<span></span>
+  </div>
+</div>
+
+    </div>
+
+    <div class="log" id="logArea">Status: inaktiv</div>
+
+    <div style="margin-top:18px;">
+      <button class="btn" id="simulateBtn">Klicke Hier SoFoRt!</button>
+    </div>
+
+    <button class="small-btn" id="exitBtn">Verlassen</button>
+  </section>
+</div>
 
 <script>
-let triggered = false;
+const pdf = document.getElementById('pdfArea');
+const term = document.getElementById('terminalArea');
+const logArea = document.getElementById('logArea');
+const simBtn = document.getElementById('simulateBtn');
+const exitBtn = document.getElementById('exitBtn');
+const warningText = document.getElementById('warningText');
+const warningTitle = document.getElementById('warningTitle');
+const warningDetails = document.getElementById('warningDetails');
+const successScene = document.getElementById('successScene');
+const popup = document.getElementById('awarenessPopup');
 
-document.getElementById("triggerClick").addEventListener("click", () => {
-    if (triggered) return;
-    triggered = true;
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
-    // Popup oben einblenden
-    const popup = document.getElementById("awarenessPopup");
-    popup.style.display = "flex";
-
-    // Terminal unten starten
-    startTerminalSimulation();
-});
-
-function appendLine(text, cls = "") {
-    const terminal = document.getElementById("terminal");
-    const div = document.createElement("div");
-    div.innerHTML = `<span class="prompt">user@client:~$</span> <span class="${cls}">${text}</span>`;
-    terminal.appendChild(div);
-    terminal.scrollTop = terminal.scrollHeight;
+function appendLine(text, cls='') {
+  const div=document.createElement('div');
+  div.className='term-line';
+  if(cls) div.classList.add(cls);
+  div.innerHTML=`<span class="prompt">user@host:~$</span> ${text}`;
+  term.appendChild(div);
+  term.scrollTop=term.scrollHeight;
+}
+function appendRaw(text, cls='') {
+  const div=document.createElement('div');
+  div.className='term-line '+cls;
+  div.textContent=text;
+  term.appendChild(div);
+  term.scrollTop=term.scrollHeight;
+}
+async function clearTerminal() {
+  term.innerHTML = '';
+  appendRaw('=== Bitte Warten, das Terminal wird gestartet ===', 'prompt');
+  await sleep(3000);
+  appendRaw('** Microsoft Windows Version 10.0.19045.6575 **');
+  await sleep(1000);
+  appendRaw('** (c) Microsoft Corporation. Alle Rechte vorbehalten. **');
 }
 
-function appendRaw(text) {
-    const terminal = document.getElementById("terminal");
-    const div = document.createElement("div");
-    div.textContent = text;
-    terminal.appendChild(div);
-    terminal.scrollTop = terminal.scrollHeight;
+async function simulateAttack(){
+  simBtn.classList.add('hidden');
+  exitBtn.classList.add('hidden');
+  pdf.classList.add('fade');
+  await sleep(800);
+  pdf.classList.add('hidden');
+  term.classList.remove('hidden');
+  warningText.classList.remove('hidden');
+  logArea.textContent='Status: Angriff läuft...';
+
+  popup.style.display = 'flex';
+  await sleep(5000);
+  popup.style.display = 'none';
+
+  appendRaw('');
+  appendLine('Öffne Datei: Lohnbescheinigung_Juli2025.pdf');
+  await sleep(800);
+  appendLine('Makro erkannt. Versuch, Payload zu laden...','danger');
+  await sleep(900);
+  appendLine('Verbindung zu 93.184.216.34:443 hergestellt','danger');
+  await sleep(900);
+  appendLine('Ordner erstellt C:\\Windows\\System32\\DaUfooo');
+  await sleep(500);
+  appendLine('cd C:\\Windows\\System32\\DaUfooo');
+  await sleep(900);
+  appendLine('Temporäre Dateien angelegt: C:\\Windows\\System32\\DaUfooo\\K3in_ViRu2.tmp','danger');
+  await sleep(600);
+  appendLine("Trojaner wurde geladen: Rechnung_2025.docx");
+  await sleep(600);
+  appendLine("Eingebautes Makro im Docx startet Payload…", "danger");
+  await sleep(900);
+  appendLine("Verbinde zu Command-&-Control-Server hergestellt", "danger");
+  await sleep(900);
+  appendLine("C2-Antwort erhalten: Lade weitere Module nach…", "danger");
+  await sleep(800);
+  appendLine("Empfange Datenpaket: Virus_SystemLocker.dll (14.2 MB)…", "danger");
+  await sleep(700);
+  appendLine("Modul wird entschlüsselt…", "danger");
+  await sleep(1000);
+  appendLine("=== HACKING ANGRIFF LÄUFT ===");
+  await sleep(900);
+  appendLine("Starte Reconnaissance-Scan…", "danger");
+  await sleep(700);
+  appendLine("Suche nach Passwörtern, Cookies, Tokens…", "danger");
+  await sleep(700);
+  appendLine("Finde KeePass-Datenbank: C:\\Users\\%USERNAME%\\Documents\\vault.kdbx", "danger");
+  await sleep(850);
+  appendLine("Extrahiere Daten aus vaultwarden.kdbx…", "danger");
+  await sleep(700);
+  appendLine("Extrahiere Daten aus keepass.kdbx…", "danger");
+  await sleep(900);
+  appendLine("Versuche Masterkey mittels Memory Scraping auszulesen…", "danger");
+  await sleep(900);
+  appendLine("Credentials gefunden: (verschlüsselt → an C2 übertragen)", "danger");
+  await sleep(1100);
+  appendLine("Durchsuche Browser-Profile…", "danger");
+  await sleep(800);
+  appendLine("Chrome: Login-Daten extrahiert", "danger");
+  await sleep(700);
+  appendLine("Edge: AutoFill-Daten erfasst", "danger");
+  await sleep(700);
+  appendLine("Sammle Dateien: Desktop, Dokumente, Downloads…", "danger");
+  await sleep(1000);
+  appendLine("Sende komprimierte Nutzerdaten (42.7 MB) an C2-Server…", "danger");
+  await sleep(1100);
+  appendLine("Initialisiere Ransomware-Modul…", "danger");
+  await sleep(1200);
+  appendLine('Ransomware geladen: Verschlüsselung startet...','danger');
+  await sleep(800);
+  appendLine("Verschlüsselung gestartet — System kompromittiert.", "danger");
+  await sleep(1500);
+  appendLine("--- 🚨 Sie wurden erfolgreich gehackt! 🚨 ---");
+  appendLine("--- 🚨 Wir Danken für IHRE Mitarbeit 🚨 ---");
+  logArea.textContent = 'Status: Awareness-Test **Fehlgeschlagen** 🛑';
 }
 
-async function startTerminalSimulation() {
-    const terminal = document.getElementById("terminal");
-    terminal.style.display = "block";
-
-    await sleep(300);
-    appendRaw("=== PHISHING ANGRIFF LÄUFT ===");
-    await sleep(600);
-
-    appendLine("Datei wurde geladen: WeinachtsGeschenk.docm");
-    await sleep(600);
-
-    appendLine("Makro startet Payload…", "danger");
-    await sleep(900);
-
-    appendLine("Verbinde zu Command-&-Control-Server…", "danger");
-    await sleep(900);
-
-    appendLine("C2-Antwort erhalten: Lade weitere Module nach…", "danger");
-    await sleep(800);
-
-    appendLine("Empfange Datenpaket: Virus_SystemLocker.dll (14.2 MB)…", "danger");
-    await sleep(700);
-
-    appendLine("Modul wird entschlüsselt…", "danger");
-    await sleep(900);
-
-    appendLine("Starte Reconnaissance-Scan…", "danger");
-    await sleep(700);
-
-    appendLine("Suche nach Passwörtern, Cookies, Tokens…", "danger");
-    await sleep(700);
-
-    appendLine("Finde KeePass-Datenbank: C:\\Users\\%USER%\\Documents\\vault.kdbx", "danger");
-    appendLine("Finde KeePass-Datenbank: N:\\Users\\%USER%\\Documents\\keepass.kdbx", "danger");
-    await sleep(850);
-
-    appendLine("Extrahiere Daten aus vaultwarden.kdbx…", "danger");
-    appendLine("Extrahiere Daten aus keepass.kdbx…", "danger");
-    await sleep(900);
-
-    appendLine("Versuche Masterkey mittels Memory Scraping auszulesen…", "danger");
-    await sleep(900);
-
-    appendLine("Credentials gefunden: (verschlüsselt → an C2 übertragen)", "danger");
-    await sleep(1100);
-
-    appendLine("Durchsuche Browser-Profile…", "danger");
-    await sleep(800);
-
-    appendLine("Chrome: Login-Daten extrahiert", "danger");
-    await sleep(700);
-
-    appendLine("Edge: AutoFill-Daten erfasst", "danger");
-    await sleep(700);
-
-    appendLine("Sammle Dateien: Desktop, Dokumente, Downloads…", "danger");
-    await sleep(1000);
-
-    appendLine("Sende komprimierte Nutzerdaten (42.7 MB) an C2-Server…", "danger");
-    await sleep(1100);
-
-    appendLine("Initialisiere Ransomware-Modul…", "danger");
-    await sleep(1200);
-
-    appendLine("Verschlüsselung gestartet — System kompromittiert.", "danger");
-    await sleep(1000);
-
-    appendRaw("--- WARNUNG: Bitte bezahle Sie 25000€ (Gerne auch in BitCoin) ---");
-    await sleep(1000);
-
-    appendLine("Vielen Dank für DEINE Daten - Frohe Weihnachten.", "danger");
-    appendLine("Ohne Weihnachtsgeld :) - Wieder Böses Lach Smiley", "danger");
+function showSuccess() {
+  if (simBtn.classList.contains('hidden')) return; 
+  simBtn.classList.add('hidden');
+  exitBtn.classList.add('hidden');
+  pdf.classList.add('hidden');
+  successScene.classList.remove('hidden');
+  successScene.style.display = 'flex';
+  logArea.textContent = 'Status: Awareness-Test bestanden ✅  - 🎉 ';
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+simBtn.addEventListener('click', simulateAttack);
+exitBtn.addEventListener('click', showSuccess);
+clearTerminal();
 </script>
-
 </body>
 </html>
 
